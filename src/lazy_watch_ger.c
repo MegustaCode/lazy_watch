@@ -30,7 +30,7 @@ static void do_init(void) {
   Layer *root_layer = window_get_root_layer(s_data.window);
   GRect frame = layer_get_frame(root_layer);
 
-  s_data.label = text_layer_create(GRect(0, 20, frame.size.w, frame.size.h - 20));
+  s_data.label = text_layer_create(GRect(0, 0, frame.size.w, frame.size.h ));//- 20));
   text_layer_set_background_color(s_data.label, GColorBlack);
   text_layer_set_text_color(s_data.label, GColorWhite);
   text_layer_set_font(s_data.label, font);
