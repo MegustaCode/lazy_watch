@@ -1,0 +1,15 @@
+{
+  "uuid": "06b0ddaf-325b-40f3-97b1-434b4f950bf7",
+  "shortName": "lazy_watch_ger",
+  "longName": "Lazy Watch German",
+  "companyName": "HansCode",
+  "versionCode": 2,
+  "versionLabel": "0.1.1",
+  "watchapp": {
+    "watchface": true
+  },
+  "appKeys": {},
+  "resources": {
+    "media": []
+  }
+}
