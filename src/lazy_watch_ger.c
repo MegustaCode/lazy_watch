@@ -9,8 +9,32 @@ static struct CommonWordsData {
   char buffer[BUFFER_SIZE];
 } s_data;
 
+static GRect frame;
+static GFont font;
+static Layer *root_layer;
+
+static void align_vert ( void )
+{
+  //init pos variable
+  int16_t new_pos = 0;
+  //get the size of the text
+  GSize current_size = text_layer_get_content_size (s_data.label);
+  //calculate the new centered pos
+  new_pos = (168 - current_size.h)/2;
+  //set the new size
+  text_layer_destroy(s_data.label);
+  s_data.label = text_layer_create(GRect(0, new_pos, frame.size.w, (frame.size.h - (2*new_pos)) ));
+  text_layer_set_background_color(s_data.label, GColorBlack);
+  text_layer_set_text_color(s_data.label, GColorWhite);
+  text_layer_set_font(s_data.label, font);
+  text_layer_set_text_alignment(s_data.label, GTextAlignmentCenter);
+  layer_add_child(root_layer, text_layer_get_layer(s_data.label));
+}
+
 static void update_time(struct tm* t) {
   fuzzy_time_to_words(t->tm_hour, t->tm_min, s_data.buffer, BUFFER_SIZE);
+  text_layer_set_text(s_data.label, s_data.buffer);
+  align_vert();
   text_layer_set_text(s_data.label, s_data.buffer);
 }
 
@@ -25,10 +49,13 @@ static void do_init(void) {
 
   window_set_background_color(s_data.window, GColorBlack);
   //GFont font = fonts_get_system_font(FONT_KEY_DROID_SERIF_28_BOLD);
-  GFont font = fonts_get_system_font(FONT_KEY_BITHAM_30_BLACK);
+  //GFont font = fonts_get_system_font(FONT_KEY_BITHAM_30_BLACK);
+  font = fonts_get_system_font(FONT_KEY_DROID_SERIF_28_BOLD);
 
-  Layer *root_layer = window_get_root_layer(s_data.window);
-  GRect frame = layer_get_frame(root_layer);
+  //Layer *root_layer = window_get_root_layer(s_data.window);
+  root_layer = window_get_root_layer(s_data.window);
+  //GRect frame = layer_get_frame(root_layer);
+  frame = layer_get_frame(root_layer);
 
   s_data.label = text_layer_create(GRect(0, 0, frame.size.w, frame.size.h ));//- 20));
   text_layer_set_background_color(s_data.label, GColorBlack);
