@@ -34,6 +34,7 @@ static void do_init(void) {
   text_layer_set_background_color(s_data.label, GColorBlack);
   text_layer_set_text_color(s_data.label, GColorWhite);
   text_layer_set_font(s_data.label, font);
+  text_layer_set_text_alignment(s_data.label, GTextAlignmentCenter);
   layer_add_child(root_layer, text_layer_get_layer(s_data.label));
 
   time_t now = time(NULL);
