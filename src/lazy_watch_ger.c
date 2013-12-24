@@ -13,22 +13,34 @@ static GRect frame;
 static GFont font;
 static Layer *root_layer;
 
-static void align_vert ( void )
+/*this function resets the layer in a new position. If required, the layer is
+ * destroyed before being reset. This is required, if it has not been created
+ * already*/
+static void reset_layer (int16_t x_pos, int16_t y_pos, int16_t width, int16_t height, bool destr)
 {
-  //init pos variable
-  int16_t new_pos = 0;
-  //get the size of the text
-  GSize current_size = text_layer_get_content_size (s_data.label);
-  //calculate the new centered pos
-  new_pos = (168 - current_size.h)/2;
-  //set the new size
-  text_layer_destroy(s_data.label);
-  s_data.label = text_layer_create(GRect(0, new_pos, frame.size.w, (frame.size.h - (2*new_pos)) ));
+  if (destr == true)
+  {
+    text_layer_destroy(s_data.label);
+  }
+  s_data.label = text_layer_create(GRect(x_pos, y_pos, width, height ));
   text_layer_set_background_color(s_data.label, GColorBlack);
   text_layer_set_text_color(s_data.label, GColorWhite);
   text_layer_set_font(s_data.label, font);
   text_layer_set_text_alignment(s_data.label, GTextAlignmentCenter);
   layer_add_child(root_layer, text_layer_get_layer(s_data.label));
+}
+
+// this function alligns the text vertically
+static void align_vert ( void )
+{
+  //init pos variable
+  uint16_t new_pos = 0;
+  //get the size of the text
+  GSize current_size = text_layer_get_content_size (s_data.label);
+  //calculate the new centered pos
+  new_pos = (168 - current_size.h)/2;
+  //set the new size
+  reset_layer(0, new_pos, frame.size.w, (frame.size.h - (new_pos)),true);
 }
 
 static void update_time(struct tm* t) {
@@ -57,13 +69,15 @@ static void do_init(void) {
   //GRect frame = layer_get_frame(root_layer);
   frame = layer_get_frame(root_layer);
 
+  reset_layer(0, 0, frame.size.w, frame.size.h,false);
+/*
   s_data.label = text_layer_create(GRect(0, 0, frame.size.w, frame.size.h ));//- 20));
   text_layer_set_background_color(s_data.label, GColorBlack);
   text_layer_set_text_color(s_data.label, GColorWhite);
   text_layer_set_font(s_data.label, font);
   text_layer_set_text_alignment(s_data.label, GTextAlignmentCenter);
   layer_add_child(root_layer, text_layer_get_layer(s_data.label));
-
+*/
   time_t now = time(NULL);
   struct tm *t = localtime(&now);
   update_time(t);

@@ -1,5 +1,6 @@
 #include "num2words.h"
 #include "string.h"
+#include "stdint.h"
 
 static const char* const ONES[] = {
   "null",
@@ -45,17 +46,17 @@ static const char* STR_NOON = "zwölf";
 static const char* STR_MIDNIGHT = "null";
 static const char* STR_QUARTER = "viertel";
 static const char* STR_TO = "vor";
-static const char* STR_PAST = "nach";
+//static const char* STR_PAST = "nach";
 static const char* STR_HALF = "halb";
 static const char* STR_AFTER = "nach";
 static const char* STR_AND = "und";
-static const char* STR_TEST = "X";
+//static const char* STR_TEST = "X";
 static const char* STR_EIN = "ein";
 static const char* STR_SPACE = "\n";
 
 
 //this returns the correct pm/am hour,  instead of the %12 hour
-int get_cor_hour (int inc_hour)
+int get_cor_hour (uint8_t inc_hour)
 {
   if (inc_hour < 12)
   {
@@ -65,9 +66,9 @@ int get_cor_hour (int inc_hour)
   {
     return 0;
   }
-  else 
+  else
   {
-    int val = (inc_hour %12);
+    uint8_t val = (inc_hour %12);
     if (val == 0)
     {
       return 12;
@@ -141,11 +142,11 @@ static size_t append_string(char* buffer, const size_t length, const char* str) 
   return (length > written) ? written : length;
 }
 
-void fuzzy_time_to_words(int hours, int minutes, char* words, size_t length)
+void fuzzy_time_to_words(int fuzzy_hours, int fuzzy_minutes, char* words, size_t length)
 {
-  int fuzzy_hours = hours;
+  //int fuzzy_hours = hours;
   //int fuzzy_minutes = ((minutes + 2) / 5) * 5;
-  int fuzzy_minutes = minutes;
+  //int fuzzy_minutes = minutes;
 
   /*// Handle hour & minute roll-over.
   if (fuzzy_minutes > 59) {
@@ -167,7 +168,6 @@ void fuzzy_time_to_words(int hours, int minutes, char* words, size_t length)
       remaining -= append_string(words, remaining, STR_SPACE);
       remaining -= append_string(words, remaining, STR_AFTER);
       remaining -= append_string(words, remaining, STR_SPACE);
-      //remaining -= append_number(words, fuzzy_hours % 12);
       remaining -= append_number(words, get_cor_hour(fuzzy_hours));
     }
     //quarter past
@@ -177,7 +177,6 @@ void fuzzy_time_to_words(int hours, int minutes, char* words, size_t length)
       remaining -= append_string(words, remaining, STR_SPACE);
       remaining -= append_string(words, remaining, STR_AFTER);
       remaining -= append_string(words, remaining, STR_SPACE);
-      //remaining -= append_number(words, fuzzy_hours % 12);
       remaining -= append_number(words, get_cor_hour(fuzzy_hours));
      }
     //quarter to
@@ -188,7 +187,6 @@ void fuzzy_time_to_words(int hours, int minutes, char* words, size_t length)
       remaining -= append_string(words, remaining, STR_TO);
       remaining -= append_string(words, remaining, STR_SPACE);
       fuzzy_hours = (fuzzy_hours + 1) % 24;
-      //remaining -= append_number(words, fuzzy_hours % 12);
       remaining -= append_number(words, get_cor_hour(fuzzy_hours));
     }
     //halb
@@ -196,12 +194,8 @@ void fuzzy_time_to_words(int hours, int minutes, char* words, size_t length)
     {
       remaining -= append_string(words, remaining, STR_HALF);
       remaining -= append_string(words, remaining, STR_SPACE);
-      //remaining -= append_number(words, (fuzzy_hours + 1) % 12);
       remaining -= append_number(words, get_cor_hour(fuzzy_hours + 1));
-      //remaining -= append_string(words, remaining, STR_PAST);
-      //remaining -= append_string(words, remaining, " ");
     }
-
     //zero to 24
     else if (fuzzy_minutes < 25)
     {
@@ -209,7 +203,6 @@ void fuzzy_time_to_words(int hours, int minutes, char* words, size_t length)
       remaining -= append_string(words, remaining, STR_SPACE);
       remaining -= append_string(words, remaining, STR_AFTER);
       remaining -= append_string(words, remaining, STR_SPACE);
-      //remaining -= append_number(words, fuzzy_hours % 12);
       remaining -= append_number(words, get_cor_hour(fuzzy_hours));
     }
     // 25 to 29
@@ -221,7 +214,6 @@ void fuzzy_time_to_words(int hours, int minutes, char* words, size_t length)
       remaining -= append_string(words, remaining, STR_SPACE);
       remaining -= append_string(words, remaining, STR_HALF);
       remaining -= append_string(words, remaining, STR_SPACE);
-      //remaining -= append_number(words, (fuzzy_hours + 1) % 12);
       remaining -= append_number(words, get_cor_hour(fuzzy_hours + 1));
     }
     //31 to 39
@@ -242,7 +234,6 @@ void fuzzy_time_to_words(int hours, int minutes, char* words, size_t length)
       remaining -= append_string(words, remaining, STR_TO);
       remaining -= append_string(words, remaining, STR_SPACE);
       fuzzy_hours = (fuzzy_hours + 1) % 24;
-      //remaining -= append_number(words, fuzzy_hours % 12);
       remaining -= append_number(words, get_cor_hour(fuzzy_hours));
     }
   }
@@ -256,9 +247,9 @@ void fuzzy_time_to_words(int hours, int minutes, char* words, size_t length)
   {
     remaining -= append_string(words, remaining, STR_NOON);
   }
+  //hour flat
   else
   {
-    //remaining -= append_number(words, fuzzy_hours % 12);
     remaining -= append_number(words, get_cor_hour(fuzzy_hours));
   }
 }
