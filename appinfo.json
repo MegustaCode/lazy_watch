@@ -3,8 +3,8 @@
   "shortName": "lazy_watch_ger",
   "longName": "Lazy Watch German",
   "companyName": "MegustaCode",
-  "versionCode": 7,
-  "versionLabel": "0.5.1",
+  "versionCode": 8,
+  "versionLabel": "0.5.2",
   "watchapp": {
     "watchface": true
   },

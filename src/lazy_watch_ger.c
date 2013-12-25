@@ -48,7 +48,7 @@ static void align_vert ( void )
   //calculate the new centered pos
   new_pos = (((168 - current_size.h)/2) - HEIGHT_CORRECTION);
   //set the new size
-  reset_layer(0, new_pos, frame.size.w, (frame.size.h - (new_pos)),true);
+  reset_layer(0, new_pos, frame.size.w, (frame.size.h /*- (new_pos)*/),true);
 }
 
 static void update_time(struct tm* t) {
