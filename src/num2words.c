@@ -220,8 +220,15 @@ void fuzzy_time_to_words(int fuzzy_hours, int fuzzy_minutes, char* words, size_t
     //print example: "elf uhr drei und dreissig"
     else if ((fuzzy_minutes > 30)&&(fuzzy_minutes < 50))
     {
-      //remaining -= append_number(words, fuzzy_hours % 12);
-      remaining -= append_number(words, get_cor_hour(fuzzy_hours));
+      //if the hour is one, print "ein" instead of "eins"
+      if ((fuzzy_hours == 1)||(fuzzy_hours == 13))
+      {
+        remaining -= append_string(words, remaining, STR_EIN);
+      }
+      else
+      {
+        remaining -= append_number(words, get_cor_hour(fuzzy_hours));
+      }
       remaining -= append_string(words, remaining, STR_SPACE);
       remaining -= append_string(words, remaining, STR_OH_CLOCK);
       remaining -= append_string(words, remaining, STR_SPACE);
