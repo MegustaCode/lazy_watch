@@ -23,7 +23,8 @@ static GFont font;
 static Layer *root_layer;
 static uint16_t layer_correct_position=0;
 
-/* init the animation*/
+/* init the animation, also used to renew the lyer_current_position for a
+ * correct fade animation*/
 static void init_animation (void)
 {
   /*create the "from" frame*/
@@ -66,14 +67,14 @@ static void reset_layer (int16_t x_pos, int16_t y_pos, int16_t width, int16_t he
 static void align_vert ( void )
 {
   //init pos variable
-  uint16_t new_pos = 0;
+  //uint16_t new_pos = 0;
   //get the size of the text
   GSize current_size = text_layer_get_content_size (s_data.label);
   //calculate the new centered pos
-  new_pos = (((168 - current_size.h)/2) - HEIGHT_CORRECTION);
-  layer_correct_position = new_pos;
+  layer_correct_position = (((168 - current_size.h)/2) - HEIGHT_CORRECTION);
+  //layer_correct_position = new_pos;
   //set the new size
-  reset_layer(0, new_pos, frame.size.w, (frame.size.h /*- (new_pos)*/),true);
+  reset_layer(0, layer_correct_position, frame.size.w, (frame.size.h /*- (new_pos)*/),true);
 }
 
 static void update_time(struct tm* t) {
@@ -81,6 +82,7 @@ static void update_time(struct tm* t) {
   text_layer_set_text(s_data.label, s_data.buffer);
   align_vert();
   text_layer_set_text(s_data.label, s_data.buffer);
+  init_animation();
   animation_schedule((Animation*) fade_animation);
 }
 
