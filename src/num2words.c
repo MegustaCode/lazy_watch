@@ -2,6 +2,22 @@
 #include "string.h"
 #include "stdint.h"
 
+#define CAPITAL
+
+#ifdef CAPITAL
+static const char* const ONES[] = {
+  "NULL",
+  "EINS",
+  "ZWEI",
+  "DREI",
+  "VIER",
+  "FÜNF",
+  "SECHS",
+  "SIEBEN",
+  "ACHT",
+  "NEUN"
+};
+#else
 static const char* const ONES[] = {
   "null",
   "eins",
@@ -14,7 +30,22 @@ static const char* const ONES[] = {
   "acht",
   "neun"
 };
+#endif
 
+#ifdef CAPITAL
+static const char* const TEENS[] ={
+  "",
+  "ELF",
+  "ZWÖLF",
+  "DREIZEHN",
+  "VIERZEHN",
+  "FÜNFZEHN",
+  "SECHZEHN",
+  "SIEBZEHN",
+  "ACHTZEHN",
+  "NEUNZEHN"
+};
+#else
 static const char* const TEENS[] ={
   "",
   "elf",
@@ -27,7 +58,22 @@ static const char* const TEENS[] ={
   "achtzehn",
   "neunzehn"
 };
+#endif
 
+#ifdef CAPITAL
+static const char* const TENS[] = {
+  "",
+  "ZEHN",
+  "ZWANZIG",
+  "DREISSIG",
+  "VIERZIG",
+  "FÜNFZIG",
+  "SECHZIG",
+  "SIEBZIG",
+  "ACHTZIG",
+  "NEUNZIG"
+};
+#else
 static const char* const TENS[] = {
   "",
   "zehn",
@@ -40,20 +86,30 @@ static const char* const TENS[] = {
   "achtzig",
   "neunzig"
 };
+#endif
 
+#ifdef CAPITAL
+static const char* STR_OH_CLOCK = "UHR";
+static const char* STR_NOON = "ZWÖLF";
+static const char* STR_MIDNIGHT = "NULL";
+static const char* STR_QUARTER = "VIERTEL";
+static const char* STR_TO = "VOR";
+static const char* STR_HALF = "HALB";
+static const char* STR_AFTER = "NACH";
+static const char* STR_AND = "UND";
+static const char* STR_EIN = "EIN";
+#else
 static const char* STR_OH_CLOCK = "uhr";
 static const char* STR_NOON = "zwölf";
 static const char* STR_MIDNIGHT = "null";
 static const char* STR_QUARTER = "viertel";
 static const char* STR_TO = "vor";
-//static const char* STR_PAST = "nach";
 static const char* STR_HALF = "halb";
 static const char* STR_AFTER = "nach";
 static const char* STR_AND = "und";
-//static const char* STR_TEST = "X";
 static const char* STR_EIN = "ein";
+#endif
 static const char* STR_SPACE = "\n";
-
 
 //this returns the correct pm/am hour,  instead of the %12 hour
 int get_cor_hour (uint8_t inc_hour)
