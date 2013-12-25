@@ -2,6 +2,7 @@
 #include "num2words.h"
 
 #define BUFFER_SIZE 86
+#define HEIGHT_CORRECTION 5
 
 static struct CommonWordsData {
   TextLayer *label;
@@ -38,7 +39,7 @@ static void align_vert ( void )
   //get the size of the text
   GSize current_size = text_layer_get_content_size (s_data.label);
   //calculate the new centered pos
-  new_pos = (168 - current_size.h)/2;
+  new_pos = (((168 - current_size.h)/2) - HEIGHT_CORRECTION);
   //set the new size
   reset_layer(0, new_pos, frame.size.w, (frame.size.h - (new_pos)),true);
 }
@@ -62,7 +63,8 @@ static void do_init(void) {
   window_set_background_color(s_data.window, GColorBlack);
   //GFont font = fonts_get_system_font(FONT_KEY_DROID_SERIF_28_BOLD);
   //GFont font = fonts_get_system_font(FONT_KEY_BITHAM_30_BLACK);
-  font = fonts_get_system_font(FONT_KEY_DROID_SERIF_28_BOLD);
+  //font = fonts_get_system_font(FONT_KEY_DROID_SERIF_28_BOLD);
+  font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_CaviarDreamsBold_29));
 
   //Layer *root_layer = window_get_root_layer(s_data.window);
   root_layer = window_get_root_layer(s_data.window);
