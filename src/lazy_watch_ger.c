@@ -2,7 +2,14 @@
 #include "num2words.h"
 
 #define BUFFER_SIZE 86
+
+#ifdef CAPITAL
+#define HEIGHT_CORRECTION 0
+#elif defined HALF_CAPITAL
+#define HEIGHT_CORRECTION 0
+#else
 #define HEIGHT_CORRECTION 5
+#endif
 
 static struct CommonWordsData {
   TextLayer *label;

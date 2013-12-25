@@ -2,7 +2,6 @@
 #include "string.h"
 #include "stdint.h"
 
-#define CAPITAL
 
 #ifdef CAPITAL
 static const char* const ONES[] = {
@@ -16,6 +15,19 @@ static const char* const ONES[] = {
   "SIEBEN",
   "ACHT",
   "NEUN"
+};
+#elif defined HALF_CAPITAL
+static const char* const ONES[] = {
+  "Null",
+  "Eins",
+  "Zwei",
+  "Drei",
+  "Vier",
+  "Fünf",
+  "Sechs",
+  "Sieben",
+  "Acht",
+  "Neun"
 };
 #else
 static const char* const ONES[] = {
@@ -45,6 +57,19 @@ static const char* const TEENS[] ={
   "ACHTZEHN",
   "NEUNZEHN"
 };
+#elif defined HALF_CAPITAL
+static const char* const TEENS[] ={
+  "",
+  "Elf",
+  "Zwölf",
+  "Dreizehn",
+  "Vierzehn",
+  "Fünfzehn",
+  "Sechzehn",
+  "Siebzehn",
+  "Achtzehn",
+  "Neunzehn"
+};
 #else
 static const char* const TEENS[] ={
   "",
@@ -73,6 +98,19 @@ static const char* const TENS[] = {
   "ACHTZIG",
   "NEUNZIG"
 };
+#elif defined HALF_CAPITAL
+static const char* const TENS[] = {
+  "",
+  "Zehn",
+  "Zwanzig",
+  "Dreissig",
+  "Vierzig",
+  "Fünfzig",
+  "Sechzig",
+  "Siebzig",
+  "Achtzig",
+  "Neunzig"
+};
 #else
 static const char* const TENS[] = {
   "",
@@ -98,6 +136,16 @@ static const char* STR_HALF = "HALB";
 static const char* STR_AFTER = "NACH";
 static const char* STR_AND = "UND";
 static const char* STR_EIN = "EIN";
+#elif defined HALF_CAPITAL
+static const char* STR_OH_CLOCK = "Uhr";
+static const char* STR_NOON = "Zwölf";
+static const char* STR_MIDNIGHT = "Null";
+static const char* STR_QUARTER = "Viertel";
+static const char* STR_TO = "vor";
+static const char* STR_HALF = "Halb";
+static const char* STR_AFTER = "nach";
+static const char* STR_AND = "und";
+static const char* STR_EIN = "Ein";
 #else
 static const char* STR_OH_CLOCK = "uhr";
 static const char* STR_NOON = "zwölf";
