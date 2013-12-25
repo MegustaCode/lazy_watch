@@ -17,9 +17,33 @@ static struct CommonWordsData {
   char buffer[BUFFER_SIZE];
 } s_data;
 
+static PropertyAnimation *fade_animation;
 static GRect frame;
 static GFont font;
 static Layer *root_layer;
+static uint16_t layer_correct_position=0;
+
+/* init the animation*/
+static void init_animation (void)
+{
+  /*create the "from" frame*/
+  GRect frame_from;
+  frame_from.origin.x=144;
+  frame_from.origin.y=layer_correct_position;
+  frame_from.size.h=frame.size.h;
+  frame_from.size.w=frame.size.w;
+  /*create the "to" frame*/
+  GRect frame_to;
+  frame_to.origin.x=0;
+  frame_to.origin.y=layer_correct_position;
+  frame_to.size.h=frame.size.h;
+  frame_to.size.w=frame.size.w;
+  Layer *layer = text_layer_get_layer(s_data.label);
+  fade_animation=property_animation_create_layer_frame(layer, &frame_from, &frame_to);
+  animation_set_duration((Animation*) fade_animation, 400);
+  animation_set_curve((Animation*) fade_animation, AnimationCurveEaseIn);
+  animation_set_delay((Animation*) fade_animation, 0);
+}
 
 /*this function resets the layer in a new position. If required, the layer is
  * destroyed before being reset. This is required, if it has not been created
@@ -47,6 +71,7 @@ static void align_vert ( void )
   GSize current_size = text_layer_get_content_size (s_data.label);
   //calculate the new centered pos
   new_pos = (((168 - current_size.h)/2) - HEIGHT_CORRECTION);
+  layer_correct_position = new_pos;
   //set the new size
   reset_layer(0, new_pos, frame.size.w, (frame.size.h /*- (new_pos)*/),true);
 }
@@ -56,13 +81,15 @@ static void update_time(struct tm* t) {
   text_layer_set_text(s_data.label, s_data.buffer);
   align_vert();
   text_layer_set_text(s_data.label, s_data.buffer);
+  animation_schedule((Animation*) fade_animation);
 }
 
 static void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
   update_time(tick_time);
 }
 
-static void do_init(void) {
+static void do_init(void)
+{
   s_data.window = window_create();
   const bool animated = true;
   window_stack_push(s_data.window, animated);
@@ -89,6 +116,10 @@ static void do_init(void) {
 */
   time_t now = time(NULL);
   struct tm *t = localtime(&now);
+
+  /*init the animation*/
+  init_animation();
+  /*update the time for the first time*/
   update_time(t);
 
   tick_timer_service_subscribe(MINUTE_UNIT, &handle_minute_tick);
@@ -97,6 +128,7 @@ static void do_init(void) {
 static void do_deinit(void) {
   window_destroy(s_data.window);
   text_layer_destroy(s_data.label);
+  property_animation_destroy(fade_animation);
 }
 
 int main(void) {
